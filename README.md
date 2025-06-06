@@ -54,13 +54,9 @@ It is a tool for **digital consciousness and education**, not surveillance.
 
 thought-crime/
 ├── manifest.json # Extension definition
-├── background.js # (Reserved for future updates)
 ├── content.js # Core detection logic
 ├── forbidden.json # Search topic database
-├── popup.html # Optional popup layout
-├── popup.css # Optional popup style
 └── README.md # This file
-
 
 ---
 
