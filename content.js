@@ -49,7 +49,7 @@ fetch(runtime.getURL("forbidden.json"))
         const distance = levenshtein(word, termLower);
         if (distance <= threshold || word.includes(termLower)) {
           data[term].forEach(c => foundCountries.add(c));
-          break; // deze term al matched, ga naar volgende
+          break; 
         }
       }
     }
