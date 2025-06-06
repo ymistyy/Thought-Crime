@@ -2,9 +2,10 @@ console.log("Thought Crime content.js loaded");
 
 const runtime = chrome?.runtime ?? browser?.runtime;
 
+// Levenshtein Distance functie (voor fuzzy matching)
 function levenshtein(a, b) {
   const m = a.length, n = b.length;
-  const dp = Array.from({ length: m + 1 }, () => new Array(n + 1));
+  const dp = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0));
 
   for (let i = 0; i <= m; i++) dp[i][0] = i;
   for (let j = 0; j <= n; j++) dp[0][j] = j;
@@ -15,9 +16,9 @@ function levenshtein(a, b) {
         dp[i][j] = dp[i - 1][j - 1];
       } else {
         dp[i][j] = Math.min(
-          dp[i - 1][j],    
-          dp[i][j - 1],    
-          dp[i - 1][j - 1] 
+          dp[i - 1][j],    // verwijder
+          dp[i][j - 1],    // voeg toe
+          dp[i - 1][j - 1] // vervang
         ) + 1;
       }
     }
@@ -33,15 +34,25 @@ fetch(runtime.getURL("forbidden.json"))
     if (!query) return;
 
     const lowerQuery = query.toLowerCase();
-    const words = lowerQuery.split(/\W+/);
-    let foundCountries = new Set();
+    const words = lowerQuery.split(/\W+/); // woorden uit de query
     const threshold = 2;
+    let foundCountries = new Set();
 
-    for (const word of words) {
-      for (const term in data) {
-        const distance = levenshtein(word, term.toLowerCase());
-        if (distance <= threshold || word.includes(term.toLowerCase())) {
+    for (const term in data) {
+      const termLower = term.toLowerCase();
+
+      // 1. Check of term voorkomt in de volledige query
+      if (lowerQuery.includes(termLower)) {
+        data[term].forEach(c => foundCountries.add(c));
+        continue;
+      }
+
+      // 2. Fuzzy match op losse woorden
+      for (const word of words) {
+        const distance = levenshtein(word, termLower);
+        if (distance <= threshold || word.includes(termLower)) {
           data[term].forEach(c => foundCountries.add(c));
+          break; // deze term al matched, ga naar volgende
         }
       }
     }
@@ -62,7 +73,10 @@ fetch(runtime.getURL("forbidden.json"))
       popup.style.borderRadius = "8px";
       popup.style.boxShadow = "0 0 10px rgba(0,0,0,0.5)";
       popup.style.fontFamily = "monospace";
-      popup.innerText = `🧠 Thought Crime Committed\nThis query is illegal in:\n${[...foundCountries].join(", ")}\n\n🔢 Total Violations: ${currentCount}`;
+      popup.innerText =
+        `🧠 Thought Crime Committed\n` +
+        `This query is illegal in:\n${[...foundCountries].join(", ")}\n\n` +
+        `🔢 Total Violations: ${currentCount}`;
       document.body.appendChild(popup);
 
       const audio = new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg");
