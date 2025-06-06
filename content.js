@@ -2,7 +2,6 @@ console.log("Thought Crime content.js loaded");
 
 const runtime = chrome?.runtime ?? browser?.runtime;
 
-// Levenshtein Distance functie (voor fuzzy matching)
 function levenshtein(a, b) {
   const m = a.length, n = b.length;
   const dp = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0));
@@ -41,13 +40,11 @@ fetch(runtime.getURL("forbidden.json"))
     for (const term in data) {
       const termLower = term.toLowerCase();
 
-      // 1. Check of term voorkomt in de volledige query
       if (lowerQuery.includes(termLower)) {
         data[term].forEach(c => foundCountries.add(c));
         continue;
       }
 
-      // 2. Fuzzy match op losse woorden
       for (const word of words) {
         const distance = levenshtein(word, termLower);
         if (distance <= threshold || word.includes(termLower)) {
