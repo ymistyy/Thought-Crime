@@ -50,16 +50,6 @@ It is a tool for **digital consciousness and education**, not surveillance.
 
 ---
 
-## File Structure
-
-thought-crime/
-├── manifest.json # Extension definition
-├── content.js # Core detection logic
-├── forbidden.json # Search topic database
-└── README.md # This file
-
----
-
 ## Disclaimer
 
 This extension is educational.  
