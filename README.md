@@ -1,5 +1,7 @@
 # Thought Crime – Browser Extension
 
+![example](example.png)
+
 **Thought Crime** is a browser extension that alerts you when your search query would be illegal or censored in other countries.  
 It serves as a reminder of how valuable and fragile our freedom of expression is.
 
@@ -64,4 +66,4 @@ The list of forbidden topics is simplified and manually compiled. Real-world law
 > — Thomas Jefferson (allegedly)
 
 We often forget how free we are—until we aren't.  
-Use this tool to appreciate your rights and reflect on those who are still fighting for theirs.
+Appreciate your rights and reflect on those who are still fighting for theirs.
