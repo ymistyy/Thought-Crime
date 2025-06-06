@@ -33,7 +33,7 @@ fetch(runtime.getURL("forbidden.json"))
     if (!query) return;
 
     const lowerQuery = query.toLowerCase();
-    const words = lowerQuery.split(/\W+/); // woorden uit de query
+    const words = lowerQuery.split(/\W+/);
     const threshold = 2;
     let foundCountries = new Set();
 
