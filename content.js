@@ -1,7 +1,30 @@
-
 console.log("Thought Crime content.js loaded");
 
 const runtime = chrome?.runtime ?? browser?.runtime;
+
+function levenshtein(a, b) {
+  const m = a.length, n = b.length;
+  const dp = Array.from({ length: m + 1 }, () => new Array(n + 1));
+
+  for (let i = 0; i <= m; i++) dp[i][0] = i;
+  for (let j = 0; j <= n; j++) dp[0][j] = j;
+
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      if (a[i - 1] === b[j - 1]) {
+        dp[i][j] = dp[i - 1][j - 1];
+      } else {
+        dp[i][j] = Math.min(
+          dp[i - 1][j],    
+          dp[i][j - 1],    
+          dp[i - 1][j - 1] 
+        ) + 1;
+      }
+    }
+  }
+
+  return dp[m][n];
+}
 
 fetch(runtime.getURL("forbidden.json"))
   .then(response => response.json())
@@ -10,11 +33,16 @@ fetch(runtime.getURL("forbidden.json"))
     if (!query) return;
 
     const lowerQuery = query.toLowerCase();
+    const words = lowerQuery.split(/\W+/);
     let foundCountries = new Set();
+    const threshold = 2;
 
-    for (const term in data) {
-      if (lowerQuery.includes(term)) {
-        data[term].forEach(c => foundCountries.add(c));
+    for (const word of words) {
+      for (const term in data) {
+        const distance = levenshtein(word, term.toLowerCase());
+        if (distance <= threshold || word.includes(term.toLowerCase())) {
+          data[term].forEach(c => foundCountries.add(c));
+        }
       }
     }
 
