@@ -1,0 +1,18 @@
+{
+  "manifest_version": 2,
+  "name": "Thought Crime",
+  "version": "1.0",
+  "permissions": ["storage"],
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.google.com/search*",
+        "*://*.bing.com/search*",
+        "*://*.duckduckgo.com/*",
+        "*://*.search.brave.com/*"
+      ],
+      "js": ["content.js"]
+    }
+  ],
+  "web_accessible_resources": ["forbidden.json"]
+}
