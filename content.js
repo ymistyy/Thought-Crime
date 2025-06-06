@@ -15,9 +15,9 @@ function levenshtein(a, b) {
         dp[i][j] = dp[i - 1][j - 1];
       } else {
         dp[i][j] = Math.min(
-          dp[i - 1][j],    // verwijder
-          dp[i][j - 1],    // voeg toe
-          dp[i - 1][j - 1] // vervang
+          dp[i - 1][j],    
+          dp[i][j - 1],    
+          dp[i - 1][j - 1] 
         ) + 1;
       }
     }
