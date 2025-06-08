@@ -72,7 +72,7 @@ fetch(runtime.getURL("forbidden.json"))
       popup.style.fontFamily = "monospace";
       popup.innerText =
         `🧠 Thought Crime Committed\n` +
-        `This query is illegal in:\n${[...foundCountries].join(", ")}\n\n` +
+        `This query would be illegal in:\n${[...foundCountries].join(", ")}\n\n` +
         `🔢 Total Violations: ${currentCount}`;
       document.body.appendChild(popup);
 
